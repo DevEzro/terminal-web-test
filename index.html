@@ -1,0 +1,53 @@
+<html>
+    <div id="terminal"></div>
+    <script>
+        const terminal = document.getElementById("terminal");
+
+        function writeLine(text = "") {
+            const line = document.createElement("div");
+            line.textContent = text;
+            terminal.appendChild(line);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        function createPrompt() {
+            const inputLine = document.createElement("div");
+            inputLine.innerHTML = `<span>$ </span><input type="text" id="cmdInput" style="background: black; border: none; color: lime; outline: none;" autofocus />`;
+            terminal.appendChild(inputLine);
+            const input = inputLine.querySelector("input");
+            input.focus();
+
+            input.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                const command = input.value.trim();
+                input.disabled = true;
+                handleCommand(command);
+            }
+            });
+        }
+
+        function handleCommand(cmd) {
+            switch (cmd.toLowerCase()) {
+            case "help":
+                writeLine("Available commands: help, about, clear");
+                break;
+            case "about":
+                writeLine("This is a fake terminal. Built by David :)");
+                break;
+            case "clear":
+                terminal.innerHTML = "";
+                break;
+            default:
+                writeLine(`Command not found: ${cmd}`);
+            }
+            createPrompt();
+        }
+
+        // Inicialización
+        window.onload = () => {
+            writeLine("Welcome to David's Web Terminal!");
+            writeLine("Type 'help' to see available commands.");
+            createPrompt();
+        };
+    </script>
+</html>
